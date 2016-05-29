@@ -1460,7 +1460,10 @@ class ListField(Field):
             val = dictionary.getlist(self.field_name, [])
             if len(val) > 0:
                 # Support QueryDict lists in HTML input.
-                return val
+                if len(val) == 1 and type(val[0]) is unicode:
+                    return val[0][1:-1].split(',')
+                else:
+                    return val
             return html.parse_html_list(dictionary, prefix=self.field_name)
         return dictionary.get(self.field_name, empty)
 
